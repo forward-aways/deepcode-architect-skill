@@ -1,7 +1,7 @@
 <div align="center">
 
-# DeepCode Architect Skill
-**深度编码架构师**
+# DeepCode Architect Skill**深度编码架构师**
+
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Format: YAML+MD Standard](https://img.shields.io/badge/Format-YAML%20Front%20Matter%20%2B%20MD-blue)](./system-prompt.md)
