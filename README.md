@@ -11,17 +11,28 @@
 
 ## 这是什么？
 
-DeepCode Architect 是一个标准化的 AI 编程技能（Skill），强制 AI 在编写任何业务代码前遵循「分析 → 设计 → 确认 → 实现 → 验证」五步工程闭环。
+DeepCode Architect 是一个标准化的 AI 编程技能（Skill），强制 AI 在编写任何业务代码前遵循「分析 → 设计 → 确认 → 实现 → 验证」五步工程闭环，并在此基础上强制**根因分析、防复发设计、泛化边界验证与反例检查**。
 
-它不是一个聊天机器人提示词，而是一套**可被 IDE 插件解析、可复用、可版本管理**的工程行为宪法，有效防止 AI 跳过思考直接生成低质量代码。
+它不是一个聊天机器人提示词，而是一套**可被 IDE 插件解析、可复用、可版本管理**的工程行为宪法，有效防止 AI 跳过思考直接生成低质量代码，也防止用「临时补丁」掩盖问题的本质。
 
 ## 核心特性
 
 - **强制设计先行**：未输出设计方案并获得用户确认前，禁止生成任何业务逻辑代码
+- **根因驱动**：区分症状、直接原因与根因，用 5 Whys / 因果链定位本质，拒绝只治症状
+- **防复发优先**：每个修复都必须配套防复发机制（回归测试、守卫、抽象、文档、监控或 lint 规则）
+- **泛化与反例**：明确适用条件、不变量、边界与反例，禁止用单个案例归纳一般规律
+- **算法精准应用**：复杂问题用算法 / 数据结构精准解决；既拒绝临时补丁，也拒绝无依据的复杂度
 - **防御性编程约束**：自动识别边界情况、错误处理与复杂度分析，拒绝模糊表述
 - **全平台兼容**：原生支持 OpenCode，可手动移植到 Cursor / Windsurf / Trae / GitHub Copilot 等主流 AI IDE
 - **语言无关**：指令为英文以确保模型遵循度，但 AI 会根据你的提问语言自动切换回复语言
 - **极简资产**：仅一个核心文件，零依赖，即装即用
+
+## 设计哲学
+
+- **简单是结果，不是目标**：不为本质复杂的问题强行套用简单方案，也不用简单补丁掩盖根因
+- **复杂度需要正当性**：复杂方案必须说明其匹配的问题结构、输入域、不变量与演进路径
+- **证据优于直觉**：每个结论都要有测试、证据或明确的手动验证步骤
+- **可沉淀可演进**：交付时同步沉淀为测试、规则、模板、文档、ADR、监控或 lint
 
 ## 快速安装
 
@@ -95,17 +106,28 @@ deepcode-architect-skill/
 
 ## What is this?
 
-DeepCode Architect is a standardized AI coding skill that enforces a mandatory five-phase engineering workflow: **Analysis → Design → Confirmation → Implementation → Verification**.
+DeepCode Architect is a standardized AI coding skill that enforces a mandatory five-phase engineering workflow: **Analysis → Design → Confirmation → Implementation → Verification**, backed by mandatory **root-cause analysis, recurrence prevention, generalization-boundary validation, and counterexample checks**.
 
-It is not a chatbot prompt. It is a **machine-parseable, reusable, version-controlled** behavioral constitution for AI coding assistants, preventing them from skipping architectural thinking and generating low-quality code prematurely.
+It is not a chatbot prompt. It is a **machine-parseable, reusable, version-controlled** behavioral constitution for AI coding assistants, preventing them from skipping architectural thinking and generating low-quality code prematurely — or masking root causes with temporary patches.
 
 ## Key Features
 
 - **Design-First Enforcement**: No business logic code is generated until a design proposal is output and explicitly confirmed by the user
+- **Root-Cause Driven**: Distinguishes symptom, direct cause, and root cause via 5 Whys / causal chains; symptom-only fixes are rejected
+- **Recurrence Prevention First**: Every fix must ship a recurrence-prevention mechanism (regression tests, guards, abstraction, docs, monitoring, or lint rules)
+- **Generalization & Counterexamples**: States applicability conditions, invariants, boundaries, and counterexamples; single-case generalization is forbidden
+- **Algorithm Precision**: Complex problems get precise algorithms and data structures; quick patches *and* unjustified complexity are both rejected
 - **Defensive Programming Constraints**: Automatically identifies edge cases, error handling requirements, and complexity analysis; rejects vague specifications
 - **Cross-Platform Compatible**: Natively supports OpenCode, and can be manually ported to Cursor, Windsurf, Trae, GitHub Copilot, and other mainstream AI IDEs
 - **Language-Agnostic**: Instructions are written in English to maximize model adherence, while the AI automatically responds in the same language as your query
 - **Minimal Footprint**: Single core file, zero dependencies, ready to use out of the box
+
+## Design Philosophy
+
+- **Simplicity is an outcome, not the goal**: Never force a simple solution onto an inherently complex problem, nor hide a root cause behind a convenient patch
+- **Complexity must be justified**: Complex solutions must explain the problem structure they match, their input domain, invariants, and evolution path
+- **Evidence over intuition**: Every conclusion needs tests, evidence, or explicit manual verification steps
+- **Sediment and evolve**: Delivery must condense the fix into tests, rules, templates, docs, ADR, monitoring, or lint
 
 ## Quick Install
 
