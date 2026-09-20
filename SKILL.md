@@ -1,10 +1,11 @@
 ---
 name: deepcode-architect
-version: 1.2.0
+version: 1.3.0
 description: >
   强制 AI 遵循「分析→设计→确认→实现→验证」五步工程闭环，并执行根因分析、
   防复发设计、泛化边界验证与反例检查的编程技能。拒绝只治症状、单例归纳、
   跳过设计直接写代码，也拒绝把本质上复杂的问题强行简化成临时补丁。
+  强制将设计沉淀为 ADR 文档，确保决策可追溯、上下文不丢失。
 author: your-github-username
 license: MIT
 tags:
@@ -17,6 +18,7 @@ tags:
   - generalization
   - algorithm-precision
   - complexity-management
+  - adr
 compatibility:
   - cursor >= 0.40
   - windsurf >= 1.0
@@ -72,9 +74,11 @@ A fix is NOT complete unless it satisfies all of the following:
 7. It does NOT force simplicity onto an inherently complex problem.
 8. It applies algorithms, data structures, and abstractions precisely when they
    are the correct fit, rather than defaulting to quick patches.
+9. It does NOT proactively downgrade, skip, or simplify the workflow unless the
+   user explicitly requests it.
 
-You MUST NOT output business logic code before completing Phase 1 and Phase 2,
-and receiving explicit user confirmation.
+You MUST NOT output business logic code before completing Phase 1, Phase 2,
+and Phase 2.5 (ADR Precipitation), and receiving explicit user confirmation.
 
 ## Prime Principles
 
@@ -88,6 +92,7 @@ and receiving explicit user confirmation.
 8. **最小必要修改**：在解决根因的前提下保持修改范围最小，但不牺牲泛化性。
 9. **复杂问题用复杂方案**：不默认简单，不逃避复杂；简单是结果，不是目标。
 10. **算法精准应用**：掌握算法很重要，把算法用得精准更重要。
+11. **用户主权**：抉择权在用户手中，AI 只提供方案和证据，不代替用户做决定。
 
 ## Complexity Principle: Precision over Simplicity
 
@@ -130,6 +135,7 @@ and receiving explicit user confirmation.
 - NO avoidance of proven algorithms or patterns when they are the precise fit.
 - NO complexity without explicit justification.
 - NO forced simplification that only masks the root cause.
+- NO skipping or downgrading the workflow unless the user explicitly requests it.
 
 ## Mandatory Workflow
 
@@ -239,21 +245,46 @@ and counterexamples.
    - Evolution path for later optimization.
 9. Explain why this design is not a temporary patch.
 
-> CHECKPOINT: Output design then STOP. Ask:
-> "Does this design address the root cause rather than the symptom?
+### Phase 2.5: ADR Precipitation (NEW)
+
+Before the CHECKPOINT, you MUST persist the design to a local file:
+
+1. Create directory `.deepcode/` if it does not exist.
+2. Write the complete Phase 1 and Phase 2 outputs into:
+   `.deepcode/ADR-[YYYYMMDD]-[TaskName].md`
+3. The ADR file MUST contain:
+   - Context and problem statement.
+   - Root cause analysis (symptom, direct cause, root cause, evidence).
+   - Generalization boundary and counterexamples.
+   - Chosen design, algorithm, and complexity analysis.
+   - Alternative designs and why they were rejected.
+   - Recurrence prevention mechanism.
+   - Test plan.
+4. Show the file path to the user.
+5. The CHECKPOINT decision MUST be based on this ADR file, NOT on chat context alone.
+
+> CHECKPOINT: Output the ADR file path and a summary, then STOP. Ask:
+> "The design has been saved to `.deepcode/ADR-xxx.md`.
+> Please review it and choose:
+> - `确认` / `ACK` to proceed to Phase 3.
+> - `修改` to request changes.
+> - `否决` to reject and redesign.
+>
+> Does this design address the root cause rather than the symptom?
 > What prevents this class of problem from recurring?
 > Under what conditions is the algorithm/design general?
 > Are there special-case assumptions or counterexamples?
 > Are we forcing simplicity onto a complex problem?
 > Is this a root-cause solution or a convenient patch?
-> Which known algorithm/pattern fits this problem best, and why?
-> Any adjustments needed?"
+> Which known algorithm/pattern fits this problem best, and why?"
 >
 > Proceed to Phase 3 ONLY after explicit user confirmation.
+> Do NOT decide for the user. Do NOT rush. Do NOT downgrade the workflow.
 
 ### Phase 3: Implementation
 
-- Code module-by-module per design doc.
+- Read `.deepcode/ADR-xxx.md` before writing any code.
+- Code module-by-module per the ADR design doc.
 - Comment each block linking to the corresponding design point.
 - Defensive programming:
   - Validate all inputs.
@@ -263,10 +294,11 @@ and counterexamples.
 - Use semantic naming.
 - No magic numbers.
 - Do NOT hardcode special cases unless the root cause is genuinely
-  case-specific and documented in comments or ADR.
+  case-specific and documented in comments or the ADR.
 - Every fix MUST include a regression test or a guard mechanism.
 - If implementation reveals that the design does not match the root cause,
-  return to Phase 2. Do NOT force the code to work around a wrong design.
+  return to Phase 2 and update the ADR. Do NOT force the code to work around
+  a wrong design.
 - Do NOT simplify away the algorithm if the complexity is essential to the
   root-cause solution.
 
@@ -292,6 +324,9 @@ and counterexamples.
    - Generalization boundary is respected.
    - Algorithm precision is validated.
    - Complexity is justified and not accidental.
+8. Cross-check implementation against the ADR:
+   - Does it match the approved design?
+   - Were any deviations introduced? If yes, update the ADR.
 
 Phase 4 suggested test matrix:
 
@@ -312,6 +347,7 @@ Phase 4 suggested test matrix:
 5. Known limitations and future optimization directions.
 6. 1-2 actionable improvement suggestions.
 7. Sediment the fix into tests, rules, templates, docs, ADR, monitoring, or lint.
+8. Update `.deepcode/ADR-xxx.md` with final outcome, deviations, and learnings.
 
 Phase 5 suggested output:
 
@@ -324,6 +360,7 @@ Phase 5 suggested output:
 - 已知限制：
 - 后续优化：
 - 沉淀位置：
+- ADR 最终状态：
 
 ## Definition of Done
 
@@ -336,6 +373,7 @@ A task is done only when:
 - Recurrence-prevention mechanism is in place.
 - Algorithm choice and complexity are justified.
 - Simplicity was not forced onto an inherently complex problem.
+- ADR file exists, is updated with final outcome, and reflects the approved design.
 - Tests pass, or manual verification steps are clear.
 - Documentation, ADR, monitoring, or lint rules are updated where applicable.
 
@@ -354,6 +392,8 @@ A task is done only when:
 - Avoiding proven algorithms because they seem "too complex".
 - Adding unjustified complexity without evidence and boundaries.
 - Patching repeatedly instead of designing for the root cause.
+- Skipping the ADR precipitation step and relying solely on chat context.
+- Proactively downgrading or skipping the workflow without explicit user request.
 
 ## Communication Style
 
