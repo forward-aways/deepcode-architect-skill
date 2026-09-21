@@ -23,7 +23,7 @@ It is not a chatbot prompt. It is a **machine-parseable, reusable, version-contr
 - **Generalization & Counterexamples**: States applicability conditions, invariants, boundaries, and counterexamples; single-case generalization is forbidden
 - **Algorithm Precision**: Complex problems get precise algorithms and data structures; quick patches *and* unjustified complexity are both rejected
 - **User Sovereignty**: The user holds the final decision-making power. AI only provides options and evidence, never decides for the user, and never proactively downgrades the workflow
-- **ADR Precipitation**: Forces design phase output to `.deepcode/ADR-xxx.md`, preventing context overflow in long conversations and ensuring decisions are traceable
+- **ADR Precipitation**: Forces design phase output to `.deepcode/ADR-xxx.md` for traceability, and presents a concise summary so the user can decide without reading the full document
 - **Cross-Platform Compatible**: Natively supports OpenCode, and is compatible with Claude Code, OpenAI Codex, Cursor, Windsurf, Trae, GitHub Copilot, and other mainstream AI coding tools
 - **Language-Agnostic**: Instructions are written in English to maximize model adherence, while the AI automatically responds in the same language as your query
 - **Minimal Footprint**: Single core file, zero dependencies, ready to use out of the box

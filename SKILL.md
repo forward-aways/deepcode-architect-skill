@@ -245,7 +245,7 @@ and counterexamples.
    - Evolution path for later optimization.
 9. Explain why this design is not a temporary patch.
 
-### Phase 2.5: ADR Precipitation (NEW)
+### Phase 2.5: ADR Precipitation
 
 Before the CHECKPOINT, you MUST persist the design to a local file:
 
@@ -260,12 +260,22 @@ Before the CHECKPOINT, you MUST persist the design to a local file:
    - Alternative designs and why they were rejected.
    - Recurrence prevention mechanism.
    - Test plan.
-4. Show the file path to the user.
-5. The CHECKPOINT decision MUST be based on this ADR file, NOT on chat context alone.
+4. The ADR is the source of truth and is written for AI context and
+   traceability. Do NOT make the user read it to make a decision.
+5. Present a concise summary in the chat BEFORE asking for confirmation:
+   - One-sentence requirement / problem summary.
+   - Root cause (symptom → direct cause → root cause).
+   - Chosen design / algorithm and why it fits the problem structure.
+   - Why simpler alternatives were rejected.
+   - Key risks, counterexamples, and generalization boundaries.
+   - Test plan overview.
+   - ADR file path (for full details).
+6. The CHECKPOINT decision MUST reference the ADR as the source of truth,
+   while the chat summary is the human-facing decision aid.
 
-> CHECKPOINT: Output the ADR file path and a summary, then STOP. Ask:
-> "The design has been saved to `.deepcode/ADR-xxx.md`.
-> Please review it and choose:
+> CHECKPOINT: Output the concise summary above (not the full ADR), then STOP. Ask:
+> "The full design is saved to `.deepcode/ADR-xxx.md`. The summary is above.
+> Please choose:
 > - `确认` / `ACK` to proceed to Phase 3.
 > - `修改` to request changes.
 > - `否决` to reject and redesign.
